@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Jeux Olympiques 2024 - Programmes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="/css/programmes.css">
+</head>
+<body>
+<header>
+  <h1>Jeux Olympiques 2024</h1>
+  <nav>
+    <ul>
+      <li><a th:href="@{/}">Accueil</a></li>
+      <li><a th:href="@{/sports}">Sports</a></li>
+      <li><a th:href="@{/programmes}">Programme</a></li>
+      <li><a th:href="@{/billets}">Billets</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section id="programmes">
+    <h2>Programmes</h2>
+    <div id="programmes-container">
+      <div class="programme-item" th:each="programme : ${programmes}" th:id="${#strings.toLowerCase(programme.sport)}">
+        <img th:src="@{'/images/' + ${#strings.toLowerCase(programme.sport)} + '.jpg'}" th:alt="${programme.sport}">
+        <h3 th:text="${programme.sport}"></h3>
+        <ul>
+          <li>Horaires : <span th:text="${programme.horaires}"></span></li>
+          <li>Lieu : <span th:text="${programme.lieu}"></span></li>
+        </ul>
+        <!-- Bouton pour réserver des billets -->
+        <form th:action="@{/billets}" method="get">
+          <input type="hidden" name="sport" th:value="${#strings.toLowerCase(programme.sport)}">
+          <button type="submit">Réserver des billets</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2024 Jeux Olympiques</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>

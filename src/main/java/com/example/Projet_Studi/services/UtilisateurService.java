@@ -4,7 +4,7 @@ import com.example.Projet_Studi.model.TypeUtilisateur;
 import com.example.Projet_Studi.model.Utilisateur;
 import com.example.Projet_Studi.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+// import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -51,7 +51,7 @@ public class UtilisateurService {
         // Cette méthode dépendra de la manière dont vous gérez l'authentification dans votre application
         // Vous pouvez également utiliser des mécanismes comme Spring Security pour gérer l'authentification et la déconnexion
         // Ici, nous allons simplement vider la session en réinitialisant les informations d'authentification
-        SecurityContextHolder.clearContext();
+        // SecurityContextHolder.clearContext();
     }
 
     public Utilisateur modifierInformationsUtilisateur(Long utilisateurId, String nouveauNom, String nouveauPrenom, String nouvelEmail, String nouveauMotDePasse) {

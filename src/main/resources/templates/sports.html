@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Jeux Olympiques 2024 - Sports</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="/css/sports.css">
+</head>
+<body>
+<header>
+  <h1>Jeux Olympiques 2024</h1>
+  <nav>
+    <ul>
+      <li><a th:href="@{/}">Accueil</a></li>
+      <li><a th:href="@{/sports}">Sports</a></li>
+      <li><a th:href="@{/programmes}">Programme</a></li>
+      <li><a th:href="@{/billets}">Billets</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section id="sports">
+    <h2>Sports</h2>
+    <div id="sports-container">
+      <div class="highlight-item" th:each="sport : ${sports}">
+        <img th:src="@{'/images/' + ${#strings.toLowerCase(sport)} + '.jpg'}" th:alt="${sport}">
+        <h3 th:text="${sport}"></h3>
+        <p>Assistez à des compétitions passionnantes et découvrez qui remportera l'or dans les arènes de Paris.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2024 Jeux Olympiques</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>

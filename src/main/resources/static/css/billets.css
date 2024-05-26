@@ -1,0 +1,34 @@
+/* Styles spécifiques pour la page billets.html */
+        #tickets {
+            text-align: center;
+            margin-top: 50px; /* Ajoutez un espace supplémentaire par rapport au haut */
+        }
+
+        #tickets form {
+            margin-top: 20px; /* Ajoutez un espace entre le formulaire et le titre */
+        }
+
+        #tickets label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #tickets select,
+        #tickets input[type="number"],
+        #tickets input[type="email"],
+        #tickets button {
+            margin-bottom: 10px;
+        }
+
+        #tickets button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #tickets button:hover {
+            background-color: #0056b3;
+        }
+    }

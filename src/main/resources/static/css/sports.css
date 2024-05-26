@@ -1,0 +1,33 @@
+/* Styles spécifiques pour la page sport.html */
+        #sports {
+            text-align: center;
+        }
+
+        #sports-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .highlight-item {
+            width: 300px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .highlight-item img {
+            max-width: 100%;
+            display: inline-block;
+        }
+
+        .highlight-item h3 {
+            margin-top: 10px;
+        }
+
+        .highlight-item p {
+            color: #555;
+        }
+    }
+}

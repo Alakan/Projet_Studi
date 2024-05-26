@@ -1,0 +1,51 @@
+/* Styles spécifiques pour la page programmes.html */
+
+/* Modifier la couleur de fond de la section programmes */
+#programmes {
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+/* Modifier le style des titres des programmes */
+.programme-item h3 {
+    color: #007bff;
+    font-size: 24px;
+    margin-top: 20px;
+    text-align: center; /* Centrer le titre */
+}
+
+/* Modifier le style des images des programmes */
+.programme-item img {
+    display: block; /* Pour centrer l'image */
+    margin: 0 auto 10px; /* Centrer l'image et ajouter un espace en bas */
+    max-width: 100%; /* Ajuster la largeur de l'image */
+    height: auto; /* Ajuster la hauteur de l'image proportionnellement */
+}
+
+/* Modifier le style des listes des horaires et lieux des programmes */
+.programme-item ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center; /* Centrer le texte */
+}
+
+.programme-item ul li {
+    margin-bottom: 5px;
+}
+
+/* Modifier le style des boutons de réservation */
+.programme-item button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block; /* Centrer le bouton */
+    margin: 0 auto 20px; /* Centrer le bouton et ajouter un espace en bas */
+}
+
+.programme-item button:hover {
+    background-color: #0056b3;
+}
