@@ -93,4 +93,5 @@ public class PaiementService {
     public void supprimerPaiement(Long idPaiement) {
         paiementRepository.deleteById(idPaiement);
     }
+
 }

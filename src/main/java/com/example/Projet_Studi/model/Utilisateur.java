@@ -2,7 +2,8 @@ package com.example.Projet_Studi.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
+import lombok.*;
+import java.io.Serializable;
 
 /**
  * Cette classe représente un utilisateur dans l'application.
@@ -10,161 +11,43 @@ import java.time.LocalDateTime;
  *
  * @author Anthony
  * @version Version initiale
- *
  */
 @Entity
 @Table(name = "utilisateur")
-public class Utilisateur {
+@Data // Génère getters, setters, toString, equals, et hashCode
+@NoArgsConstructor // Génère un constructeur sans arguments
+@AllArgsConstructor // Génère un constructeur avec tous les arguments
+public class Utilisateur implements Serializable {
 
-    /**
-     * L'identifiant unique de l'utilisateur.
-     */
+    private static final long serialVersionUID = 1L;
+
+    // L'identifiant unique de l'utilisateur.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Le nom de famille de l'utilisateur.
-     */
-    @Column(name = "nom")
+    // Le nom de famille de l'utilisateur.
+    @Column(name = "nom", nullable = false)
     private String nom;
 
-    /**
-     * Le prénom de l'utilisateur.
-     */
-    @Column(name = "prenom")
+    // Le prénom de l'utilisateur.
+    @Column(name = "prenom", nullable = false)
     private String prenom;
 
-    /**
-     * L'adresse e-mail de l'utilisateur.
-     */
-    @Column(name = "email")
+    // L'adresse e-mail de l'utilisateur.
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    /**
-     * Le mot de passe de l'utilisateur. Il est recommandé de stocker les mots de passe de manière sécurisée en utilisant un algorithme de hachage.
-     */
-    @Column(name = "mot_de_passe")
+    // Le mot de passe de l'utilisateur.
+    @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
-    /**
-     * Le type d'utilisateur.
-     */
+
+    // Le type d'utilisateur.
     @Enumerated(EnumType.STRING)
     @Column(name = "type_utilisateur")
     private TypeUtilisateur typeUtilisateur;
 
-    @Column(name ="date_creation")
+    // La date de création de l'utilisateur.
+    @Column(name ="date_creation", nullable = false)
     private LocalDateTime dateCreation;
-
-
-    // Getters and Setters
-
-    /**
-     * Obtient l'identifiant de l'utilisateur.
-     *
-     * @return l'identifiant de l'utilisateur.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Définit l'identifiant de l'utilisateur.
-     *
-     * @param id l'identifiant à définir.
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Obtient le nom de famille de l'utilisateur.
-     *
-     * @return le nom de famille de l'utilisateur.
-     */
-    public String getNom() {
-        return nom;
-    }
-
-    /**
-     * Définit le nom de famille de l'utilisateur.
-     *
-     * @param nom le nom de famille à définir.
-     */
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    /**
-     * Obtient le prénom de l'utilisateur.
-     *
-     * @return le prénom de l'utilisateur.
-     */
-    public String getPrenom() {
-        return prenom;
-    }
-
-    /**
-     * Définit le prénom de l'utilisateur.
-     *
-     * @param prenom le prénom à définir.
-     */
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    /**
-     * Obtient l'adresse e-mail de l'utilisateur.
-     *
-     * @return l'adresse e-mail de l'utilisateur.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Définit l'adresse e-mail de l'utilisateur.
-     *
-     * @param email l'adresse e-mail à définir.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Obtient le mot de passe de l'utilisateur.
-     *
-     * @return le mot de passe de l'utilisateur.
-     */
-    public String getMotDePasse() {
-        return motDePasse;
-    }
-
-    /**
-     * Définit le mot de passe de l'utilisateur. Il est recommandé de stocker les mots de passe de manière sécurisée en utilisant un algorithme de hachage.
-     *
-     * @param motDePasse le mot de passe à définir.
-     */
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
-    }
-    /**
-     * Obtient le type d'utilisateur.
-     *
-     * @return le type d'utilisateur.
-     */
-    public TypeUtilisateur getTypeUtilisateur() {
-        return typeUtilisateur;
-    }
-
-    /**
-     * Définit le type d'utilisateur.
-     *
-     * @param typeUtilisateur le type d'utilisateur à définir.
-     */
-    public void setTypeUtilisateur(TypeUtilisateur typeUtilisateur) {
-        this.typeUtilisateur = typeUtilisateur;
-    }
-
 }
-

@@ -1,12 +1,17 @@
 package com.example.Projet_Studi.controller;
+
 import com.example.Projet_Studi.model.OffreDeBillet;
 import com.example.Projet_Studi.model.TypeOffre;
 import com.example.Projet_Studi.services.OffreDeBilletService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/offres-de-billet")
@@ -15,57 +20,66 @@ public class OffreDeBilletController {
     @Autowired
     private OffreDeBilletService offreDeBilletService;
 
-    // Méthode pour créer une nouvelle offre de billet
+    @SneakyThrows
     @PostMapping("/creer")
-    public OffreDeBillet creerOffreDeBillet(@RequestBody OffreDeBillet offreDeBillet) {
-        return offreDeBilletService.creerOffreDeBillet(offreDeBillet);
+    public ResponseEntity<OffreDeBillet> creerOffreDeBillet(@RequestBody OffreDeBillet offreDeBillet) {
+        OffreDeBillet newOffreDeBillet = offreDeBilletService.creerOffreDeBillet(offreDeBillet);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newOffreDeBillet);
     }
 
-    // Méthode pour récupérer une offre de billet par son ID
+    @SneakyThrows
     @GetMapping("/{id}")
-    public OffreDeBillet getOffreDeBilletById(@PathVariable Long id) {
-        return offreDeBilletService.getOffreDeBilletById(id);
+    public ResponseEntity<OffreDeBillet> getOffreDeBilletById(@PathVariable Long id) {
+        OffreDeBillet offreDeBillet = offreDeBilletService.getOffreDeBilletById(id);
+        return ResponseEntity.of(Optional.ofNullable(offreDeBillet));
     }
 
-    // Méthode pour récupérer toutes les offres de billet
+    @SneakyThrows
     @GetMapping("/toutes")
-    public List<OffreDeBillet> getAllOffresDeBillet() {
-        return offreDeBilletService.getAllOffresDeBillet();
+    public ResponseEntity<List<OffreDeBillet>> getAllOffresDeBillet() {
+        List<OffreDeBillet> offresDeBillet = offreDeBilletService.getAllOffresDeBillet();
+        return ResponseEntity.ok(offresDeBillet);
     }
 
-    // Méthode pour rechercher des offres de billet par type
+    @SneakyThrows
     @GetMapping("/rechercher/type/{type}")
-    public List<OffreDeBillet> rechercherOffresParType(@PathVariable TypeOffre type) {
-        return offreDeBilletService.rechercherOffresParType(type);
+    public ResponseEntity<List<OffreDeBillet>> rechercherOffresParType(@PathVariable TypeOffre type) {
+        List<OffreDeBillet> offresDeBillet = offreDeBilletService.rechercherOffresParType(type);
+        return ResponseEntity.ok(offresDeBillet);
     }
 
-    // Méthode pour rechercher des offres de billet par prix inférieur à un certain montant
+    @SneakyThrows
     @GetMapping("/rechercher/prix/inferieur/{prix}")
-    public List<OffreDeBillet> rechercherOffresParPrixInferieur(@PathVariable BigDecimal prix) {
-        return offreDeBilletService.rechercherOffresParPrixInferieur(prix);
+    public ResponseEntity<List<OffreDeBillet>> rechercherOffresParPrixInferieur(@PathVariable BigDecimal prix) {
+        List<OffreDeBillet> offresDeBillet = offreDeBilletService.rechercherOffresParPrixInferieur(prix);
+        return ResponseEntity.ok(offresDeBillet);
     }
 
-    // Méthode pour rechercher des offres de billet par prix supérieur à un certain montant
+    @SneakyThrows
     @GetMapping("/rechercher/prix/superieur/{prix}")
-    public List<OffreDeBillet> rechercherOffresParPrixSuperieur(@PathVariable BigDecimal prix) {
-        return offreDeBilletService.rechercherOffresParPrixSuperieur(prix);
+    public ResponseEntity<List<OffreDeBillet>> rechercherOffresParPrixSuperieur(@PathVariable BigDecimal prix) {
+        List<OffreDeBillet> offresDeBillet = offreDeBilletService.rechercherOffresParPrixSuperieur(prix);
+        return ResponseEntity.ok(offresDeBillet);
     }
 
-    // Méthode pour rechercher des offres de billet par prix compris entre deux valeurs
+    @SneakyThrows
     @GetMapping("/rechercher/prix/intervalle/{prixMin}/{prixMax}")
-    public List<OffreDeBillet> rechercherOffresParPrixIntervalle(@PathVariable BigDecimal prixMin, @PathVariable BigDecimal prixMax) {
-        return offreDeBilletService.rechercherOffresParPrixIntervalle(prixMin, prixMax);
+    public ResponseEntity<List<OffreDeBillet>> rechercherOffresParPrixIntervalle(@PathVariable BigDecimal prixMin, @PathVariable BigDecimal prixMax) {
+        List<OffreDeBillet> offresDeBillet = offreDeBilletService.rechercherOffresParPrixIntervalle(prixMin, prixMax);
+        return ResponseEntity.ok(offresDeBillet);
     }
 
-    // Méthode pour mettre à jour une offre de billet existante
+    @SneakyThrows
     @PutMapping("/mettre-a-jour")
-    public OffreDeBillet mettreAJourOffreDeBillet(@RequestBody OffreDeBillet offreDeBillet) {
-        return offreDeBilletService.mettreAJourOffreDeBillet(offreDeBillet);
+    public ResponseEntity<OffreDeBillet> mettreAJourOffreDeBillet(@RequestBody OffreDeBillet offreDeBillet) {
+        OffreDeBillet updatedOffreDeBillet = offreDeBilletService.mettreAJourOffreDeBillet(offreDeBillet);
+        return ResponseEntity.ok(updatedOffreDeBillet);
     }
 
-    // Méthode pour supprimer une offre de billet par son ID
+    @SneakyThrows
     @DeleteMapping("/supprimer/{id}")
-    public void supprimerOffreDeBillet(@PathVariable Long id) {
+    public ResponseEntity<Void> supprimerOffreDeBillet(@PathVariable Long id) {
         offreDeBilletService.supprimerOffreDeBillet(id);
+        return ResponseEntity.noContent().build();
     }
 }

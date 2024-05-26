@@ -1,6 +1,9 @@
 package com.example.Projet_Studi.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -9,85 +12,27 @@ import java.time.LocalDateTime;
  *
  * @author Anthony
  * @version Version initiale
- *
  */
 @Entity
 @Table(name = "panier")
-public class Panier {
+@Data // Génère getters, setters, toString, equals, et hashCode
+@NoArgsConstructor // Génère un constructeur sans arguments
+@AllArgsConstructor // Génère un constructeur avec tous les arguments
+public class Panier implements Serializable {
 
-    /**
-     * L'identifiant unique du panier.
-     */
+    private static final long serialVersionUID = 1L;
+
+    // L'identifiant unique du panier.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * L'utilisateur associé au panier.
-     */
+    // L'utilisateur associé au panier.
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
+    @JoinColumn(name = "id_utilisateur", nullable = false)
     private Utilisateur utilisateur;
 
-    /**
-     * La date de création du panier.
-     */
-    @Column(name = "date_creation")
+    // La date de création du panier.
+    @Column(name = "date_creation", nullable = false)
     private LocalDateTime dateCreation;
-
-    // Getters and Setters
-
-    /**
-     * Obtient l'identifiant du panier.
-     *
-     * @return l'identifiant du panier.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Définit l'identifiant du panier.
-     *
-     * @param id l'identifiant à définir.
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Obtient l'utilisateur associé au panier.
-     *
-     * @return l'utilisateur associé au panier.
-     */
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
-    }
-
-    /**
-     * Définit l'utilisateur associé au panier.
-     *
-     * @param utilisateur l'utilisateur à associer.
-     */
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
-    }
-
-    /**
-     * Obtient la date de création du panier.
-     *
-     * @return la date de création du panier.
-     */
-    public LocalDateTime getDateCreation() {
-        return dateCreation;
-    }
-
-    /**
-     * Définit la date de création du panier.
-     *
-     * @param dateCreation la date de création à définir.
-     */
-    public void setDateCreation(LocalDateTime dateCreation) {
-        this.dateCreation = dateCreation;
-    }
 }

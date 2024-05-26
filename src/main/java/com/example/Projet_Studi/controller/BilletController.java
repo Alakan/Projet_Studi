@@ -4,10 +4,14 @@ import com.example.Projet_Studi.model.Billet;
 import com.example.Projet_Studi.model.Commande;
 import com.example.Projet_Studi.model.Utilisateur;
 import com.example.Projet_Studi.services.BilletService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/billets")
@@ -16,49 +20,56 @@ public class BilletController {
     @Autowired
     private BilletService billetService;
 
-    // Méthode pour créer un nouveau billet et l'associer à une commande et un utilisateur
+    @SneakyThrows
     @PostMapping("/creer")
-    public Billet creerBillet(@RequestBody Commande commande, @RequestBody Utilisateur utilisateur) {
-        return billetService.creerBillet(commande, utilisateur);
+    public ResponseEntity<Billet> creerBillet(@RequestBody Commande commande, @RequestBody Utilisateur utilisateur) {
+        Billet newBillet = billetService.creerBillet(commande, utilisateur);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newBillet);
     }
 
-    // Méthode pour récupérer un billet par son ID
+    @SneakyThrows
     @GetMapping("/{id}")
-    public Billet getBilletById(@PathVariable Long id) {
-        return billetService.getBilletById(id);
+    public ResponseEntity<Billet> getBilletById(@PathVariable Long id) {
+        Billet billet = billetService.getBilletById(id);
+        return ResponseEntity.of(Optional.ofNullable(billet));
     }
 
-    // Méthode pour récupérer tous les billets
+    @SneakyThrows
     @GetMapping("/tous")
-    public List<Billet> getAllBillets() {
-        return billetService.getAllBillets();
+    public ResponseEntity<List<Billet>> getAllBillets() {
+        List<Billet> billets = billetService.getAllBillets();
+        return ResponseEntity.ok(billets);
     }
 
-    // Méthode pour rechercher les billets associés à une commande
+    @SneakyThrows
     @GetMapping("/rechercher/commande/{idCommande}")
-    public List<Billet> rechercherBilletsParCommande(@PathVariable Long idCommande) {
+    public ResponseEntity<List<Billet>> rechercherBilletsParCommande(@PathVariable Long idCommande) {
         Commande commande = new Commande();
         commande.setId(idCommande);
-        return billetService.rechercherBilletsParCommande(commande);
+        List<Billet> billets = billetService.rechercherBilletsParCommande(commande);
+        return ResponseEntity.ok(billets);
     }
 
-    // Méthode pour rechercher les billets associés à un utilisateur
+    @SneakyThrows
     @GetMapping("/rechercher/utilisateur/{idUtilisateur}")
-    public List<Billet> rechercherBilletsParUtilisateur(@PathVariable Long idUtilisateur) {
+    public ResponseEntity<List<Billet>> rechercherBilletsParUtilisateur(@PathVariable Long idUtilisateur) {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setId(idUtilisateur);
-        return billetService.rechercherBilletsParUtilisateur(utilisateur);
+        List<Billet> billets = billetService.rechercherBilletsParUtilisateur(utilisateur);
+        return ResponseEntity.ok(billets);
     }
 
-    // Méthode pour mettre à jour un billet existant
+    @SneakyThrows
     @PutMapping("/mettre-a-jour")
-    public Billet mettreAJourBillet(@RequestBody Billet billet) {
-        return billetService.mettreAJourBillet(billet);
+    public ResponseEntity<Billet> mettreAJourBillet(@RequestBody Billet billet) {
+        Billet updatedBillet = billetService.mettreAJourBillet(billet);
+        return ResponseEntity.ok(updatedBillet);
     }
 
-    // Méthode pour supprimer un billet par son ID
+    @SneakyThrows
     @DeleteMapping("/supprimer/{id}")
-    public void supprimerBillet(@PathVariable Long id) {
+    public ResponseEntity<Void> supprimerBillet(@PathVariable Long id) {
         billetService.supprimerBillet(id);
+        return ResponseEntity.noContent().build();
     }
 }
