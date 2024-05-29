@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Jeux Olympiques 2024</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <header>
@@ -15,111 +15,55 @@
             <li><a th:href="@{/sports}">Sports</a></li>
             <li><a th:href="@{/programmes}">Programme</a></li>
             <li><a th:href="@{/billets}">Billets</a></li>
+            <li><a th:href="@{/user-login}">Connexion</a></li>
+            <li><a th:href="@{/user-register}">Inscription</a></li>
         </ul>
     </nav>
 </header>
 <main>
-    <section id="highlights">
-        <h2>Points forts</h2>
-        <div id="highlights-container">
-            <!-- Athlétisme -->
-            <a th:href="@{/programmes#athletisme}" class="highlight-item">
-                <img src="/images/athlétisme.jpg" alt="Athlétisme">
-                <h3>Athlétisme</h3>
-                <p>Les plus grands athlètes du monde se réunissent pour rivaliser dans diverses disciplines d'athlétisme.</p>
-            </a>
-            <!-- Natation -->
-            <a th:href="@{/programmes#natation}" class="highlight-item">
-                <img src="/images/natation.jpg" alt="Natation">
-                <h3>Natation</h3>
-                <p>Assistez à des courses de natation passionnantes et découvrez qui remportera l'or dans les piscines de Paris.</p>
-            </a>
-            <!-- Gymnastique -->
-            <a th:href="@{/programmes#gymnastique}" class="highlight-item">
-                <img src="/images/gymnastique.jpg" alt="Gymnastique">
-                <h3>Gymnastique</h3>
-                <p>Regardez les performances gracieuses et acrobatiques des gymnastes du monde entier.</p>
-            </a>
-            <!-- Basket-ball -->
-            <a th:href="@{/programmes#basketball}" class="highlight-item">
-                <img src="/images/basketball.jpg" alt="Basketball">
-                <h3>Basketball</h3>
-                <p>Assistez à des matchs de basketball intenses et découvrez qui remportera la médaille d'or sur le terrain.</p>
-            </a>
-            <!-- Football -->
-            <a th:href="@{/programmes#football}" class="highlight-item">
-                <img src="/images/football.jpg" alt="Football">
-                <h3>Football (Soccer)</h3>
-                <p>Découvrez le frisson du football alors que les meilleures équipes du monde s'affrontent sur le terrain.</p>
-            </a>
-            <!-- Tennis -->
-            <a th:href="@{/programmes#tennis}" class="highlight-item">
-                <img src="/images/tennis.jpg" alt="Tennis">
-                <h3>Tennis</h3>
-                <p>Assistez à des matchs de tennis passionnants avec les meilleurs joueurs du monde se battant pour la victoire.</p>
-            </a>
-            <!-- Volleyball -->
-            <a th:href="@{/programmes#volleyball}" class="highlight-item">
-                <img src="/images/volleyball.jpg" alt="Volleyball">
-                <h3>Volleyball</h3>
-                <p>Regardez les équipes s'affronter dans des matchs de volleyball palpitants pour décrocher l'or.</p>
-            </a>
-            <!-- Cyclisme -->
-            <a th:href="@{/programmes#cyclisme}" class="highlight-item">
-                <img src="/images/cyclisme.jpg" alt="Cyclisme">
-                <h3>Cyclisme</h3>
-                <p>Assistez à des courses de cyclisme passionnantes et découvrez qui franchira la ligne d'arrivée en premier.</p>
-            </a>
-            <!-- Boxe -->
-            <a th:href="@{/programmes#boxe}" class="highlight-item">
-                <img src="/images/boxe.jpg" alt="Boxe">
-                <h3>Boxe</h3>
-                <p>Regardez les combats de boxe les plus excitants alors que les boxeurs se battent pour la gloire olympique.</p>
-            </a>
-            <!-- Escrime -->
-            <a th:href="@{/programmes#escrime}" class="highlight-item">
-                <img src="/images/escrime.jpg" alt="Escrime">
-                <h3>Escrime</h3>
-                <p>Assistez à des duels d'épée passionnants et découvrez qui sera couronné champion.</p>
-            </a>
-            <!-- Judo -->
-            <a th:href="@{/programmes#judo}" class="highlight-item">
-                <img src="/images/judo.jpg" alt="Judo">
-                <h3>Judo</h3>
-                <p>Regardez les techniques impressionnantes de judo alors que les judokas s'affrontent pour la victoire.</p>
-            </a>
-            <!-- Taekwondo -->
-            <a th:href="@{/programmes#taekwondo}" class="highlight-item">
-                <img src="/images/taekwondo.jpg" alt="Taekwondo">
-                <h3>Taekwondo</h3>
-                <p>Assistez aux combats de taekwondo dynamiques alors que les athlètes rivalisent pour la gloire olympique.</p>
-            </a>
-            <!-- Rugby -->
-            <a th:href="@{/programmes#rugby}" class="highlight-item">
-                <img src="/images/rugby.jpg" alt="Rugby">
-                <h3>Rugby à sept</h3>
-                <p>Regardez l'action rapide et intense du rugby à sept alors que les équipes se battent pour la médaille d'or.</p>
-            </a>
-            <!-- Handball -->
-            <a th:href="@{/programmes#handball}" class="highlight-item">
-                <img src="/images/handball.jpg" alt="Handball">
-                <h3>Handball</h3>
-                <p>Assistez à des matchs de handball passionnants alors que les équipes s'affrontent pour la victoire olympique.</p>
-            </a>
-            <!-- Badminton -->
-            <a th:href="@{/programmes#badminton}" class="highlight-item">
-                <img src="/images/badminton.jpg" alt="Badminton">
-                <h3>Badminton</h3>
-                <p>Regardez les matchs de badminton rapides et dynamiques alors que les joueurs visent le volant pour la gloire olympique.</p>
-            </a>
+    <section id="general-info">
+        <h2>À propos des Jeux Olympiques</h2>
+        <p>Les Jeux Olympiques de 2024 se dérouleront à Paris, France. Cet événement mondial accueillera des athlètes de plus de 200 pays, compétant dans 33 sports différents.</p>
+        <p>Les JO sont une célébration du sport, de l'excellence, et de l'unité internationale. C'est une occasion unique de voir les meilleurs athlètes du monde en action, de découvrir de nouvelles cultures, et de partager des moments inoubliables.</p>
+    </section>
+
+    <section id="news">
+        <h2>Actualités des JO</h2>
+        <div id="news-container">
+            <div class="news-item">
+                <h3>Nouvelles disciplines ajoutées</h3>
+                <p>Le Comité Olympique a annoncé l'ajout de nouvelles disciplines pour les JO 2024, incluant le breakdance et l'escalade sportive.</p>
+                <a th:href="@{/actualites/nouvelles-disciplines}" class="read-more">Lire la suite</a>
+            </div>
+            <div class="news-item">
+                <h3>Billetterie ouverte</h3>
+                <p>La billetterie pour les Jeux Olympiques 2024 est maintenant ouverte. Ne manquez pas votre chance d'assister à cet événement historique.</p>
+                <a th:href="@{/actualites/billetterie-ouverte}" class="read-more">Lire la suite</a>
+            </div>
+            <div class="news-item">
+                <h3>Annonce des mascottes</h3>
+                <p>Découvrez les mascottes officielles des JO 2024, symboles de l'esprit olympique et de l'hospitalité parisienne.</p>
+                <a th:href="@{/actualites/annonce-mascottes}" class="read-more">Lire la suite</a>
+            </div>
         </div>
     </section>
 
+    <section id="highlights">
+        <h2>Points forts</h2>
+        <div id="highlights-container">
+            <div th:each="sport : ${sports}" class="highlight-item">
+                <a th:href="@{'/programmes#' + ${#strings.toLowerCase(sport)}}">
+                <img th:src="@{'/images/' + ${#strings.toLowerCase(sport)} + '.jpg'}" th:alt="${sport}">
+                    <h3 th:text="${sport}"></h3>
+                    <p>Découvrez le frisson du ${sport} aux Jeux Olympiques de 2024.</p>
+                </a>
+            </div>
+        </div>
+    </section>
 </main>
 <footer>
     <p>&copy; 2024 Jeux Olympiques</p>
 </footer>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/js/script.js"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

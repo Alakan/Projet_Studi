@@ -1,15 +1,14 @@
 package com.example.Projet_Studi.model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Programme {
     private String sport;
     private String horaires;
     private String lieu;
-
-    public Programme(String sport, String horaires, String lieu) {
-        this.sport = sport;
-        this.horaires = horaires;
-        this.lieu = lieu;
-    }
 }
+
