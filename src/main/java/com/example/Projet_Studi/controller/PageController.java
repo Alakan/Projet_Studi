@@ -1,16 +1,27 @@
 package com.example.Projet_Studi.controller;
 
 import com.example.Projet_Studi.model.Programme;
+import com.example.Projet_Studi.model.Utilisateur;
+import com.example.Projet_Studi.services.UtilisateurService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.example.Projet_Studi.controller.NewsItem;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 public class PageController {
+
+    private final UtilisateurService utilisateurService;
+
+    public PageController(UtilisateurService userService) {
+        this.utilisateurService = userService;
+    }
 
     @GetMapping("/")
     public String index(Model model) {
@@ -19,13 +30,6 @@ public class PageController {
                 "Volleyball", "Cyclisme", "Boxe", "Escrime", "Judo", "Taekwondo", "Rugby", "Handball", "Badminton"
         );
         model.addAttribute("sports", sports);
-
-        List<NewsItem> newsItems = Arrays.asList(
-                new NewsItem("Nouvelles disciplines ajoutées", "Le Comité Olympique a annoncé l'ajout de nouvelles disciplines pour les JO 2024, incluant le breakdance et l'escalade sportive.", "/actualites/nouvelles-disciplines"),
-                new NewsItem("Billetterie ouverte", "La billetterie pour les Jeux Olympiques 2024 est maintenant ouverte. Ne manquez pas votre chance d'assister à cet événement historique.", "/actualites/billetterie-ouverte"),
-                new NewsItem("Annonce des mascottes", "Découvrez les mascottes officielles des JO 2024, symboles de l'esprit olympique et de l'hospitalité parisienne.", "/actualites/annonce-mascottes")
-        );
-        model.addAttribute("newsItems", newsItems);
 
         return "index";
     }
@@ -75,8 +79,24 @@ public class PageController {
     }
 
     @GetMapping("/user-register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("user", new Utilisateur());
         return "user-register";
+    }
+
+    @PostMapping("/user-register")
+    public String processRegistration(@ModelAttribute @Valid Utilisateur utilisateur, BindingResult result) {
+        if (result.hasErrors()) {
+            // S'il y a des erreurs de validation, retourne à la page d'inscription avec les erreurs affichées
+            return "user-register";
+        }
+
+        // Ajoutez ici la logique pour traiter les données du formulaire et ajouter l'utilisateur à la base de données
+        // Utilisez le service UserService pour ajouter l'utilisateur
+        utilisateurService.inscrireUtilisateur(utilisateur);
+
+        // Redirige vers la page de connexion après l'inscription réussie
+        return "redirect:/user-login";
     }
 
     @GetMapping("/user-profile")

@@ -1,30 +1,45 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { ProfilComponent } from './profil/profil.component';
-import { RechercheComponent } from './recherche/recherche.component';
-import { CommandesComponent } from './commandes/commandes.component';
-
-const routes: Routes = [
-  { path: '', redirectTo: '/accueil', pathMatch: 'full' },
-  { path: 'accueil', component: AppComponent },
-  { path: 'profil', component: ProfilComponent },
-  { path: 'recherche', component: RechercheComponent },
-  { path: 'commandes', component: CommandesComponent }
-];
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { TicketListComponent } from './ticket-list/ticket-list.component';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
+import { CartComponent } from './cart/cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProfilComponent,
-    RechercheComponent,
-    CommandesComponent
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
+    TicketListComponent,
+    TicketDetailsComponent,
+    CartComponent,
+    CheckoutComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes)
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot([
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'tickets', component: TicketListComponent },
+      { path: 'tickets/:id', component: TicketDetailsComponent },
+      { path: 'cart', component: CartComponent },
+      { path: 'checkout', component: CheckoutComponent },
+      { path: '**', component: NotFoundComponent }
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
