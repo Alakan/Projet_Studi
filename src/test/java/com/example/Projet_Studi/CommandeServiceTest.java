@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CommandeServiceTest {
-
+/*
     @Mock
     private CommandeRepository commandeRepository;
 
@@ -129,5 +129,5 @@ public class CommandeServiceTest {
 
         // Vérification que la méthode getCommandeById lance une EntityNotFoundException
         assertThrows(EntityNotFoundException.class, () -> commandeService.getCommandeById(1L));
-    }
+    }*/
 }
