@@ -2,7 +2,7 @@ package com.example.Projet_Studi.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombok.*;
+import lombok.Data;
 import java.io.Serializable;
 
 /**
@@ -15,8 +15,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "utilisateur")
 @Data // Génère getters, setters, toString, equals, et hashCode
-@NoArgsConstructor // Génère un constructeur sans arguments
-@AllArgsConstructor // Génère un constructeur avec tous les arguments
 public class Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +46,6 @@ public class Utilisateur implements Serializable {
     private TypeUtilisateur typeUtilisateur;
 
     // La date de création de l'utilisateur.
-    @Column(name ="date_creation", nullable = false)
+    @Column(name = "date_creation", nullable = false)
     private LocalDateTime dateCreation;
 }

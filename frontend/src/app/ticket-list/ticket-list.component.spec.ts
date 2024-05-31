@@ -1,23 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
+import { TicketService } from '../ticket.service';
+import { Ticket } from '../ticket.model';
 
-import { TicketListComponent } from './ticket-list.component';
+@Component({
+  selector: 'app-ticket-list',
+  templateUrl: './ticket-list.component.html',
+  styleUrls: ['./ticket-list.component.css']
+})
+export class TicketListComponent implements OnInit {
+  tickets: Ticket[] = [];
 
-describe('TicketListComponent', () => {
-  let component: TicketListComponent;
-  let fixture: ComponentFixture<TicketListComponent>;
+  constructor(private ticketService: TicketService) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TicketListComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(TicketListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  ngOnInit(): void {
+    this.ticketService.getTickets().subscribe((data: Ticket[]) => {
+      this.tickets = data;
+    });
+  }
+}

@@ -4,7 +4,9 @@ import com.example.Projet_Studi.model.TypeUtilisateur;
 import com.example.Projet_Studi.model.Utilisateur;
 import com.example.Projet_Studi.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,13 +18,22 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
+    @Autowired
+    public UtilisateurService(UtilisateurRepository utilisateurRepository) {
+        this.utilisateurRepository = utilisateurRepository;
+    }
+
     public Utilisateur inscrireUtilisateur(Utilisateur utilisateur) {
-        // Logique pour vérifier les données de l'utilisateur et l'enregistrer dans la base de données
+        if (!validerDonneesUtilisateur(utilisateur)) {
+            throw new IllegalArgumentException("Les données utilisateur sont invalides");
+        }
+        utilisateur.setDateCreation(LocalDateTime.now());
         return utilisateurRepository.save(utilisateur);
     }
 
     public Utilisateur getUtilisateurById(Long utilisateurId) {
-        return utilisateurRepository.findById(utilisateurId).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        return utilisateurRepository.findById(utilisateurId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
 
     public boolean existeUtilisateurParEmail(String email) {
@@ -33,31 +44,14 @@ public class UtilisateurService {
         return utilisateurRepository.findAll();
     }
 
-    public List<Utilisateur> rechercherUtilisateursParNomOuPrenom(String termeRecherche) {
-        return utilisateurRepository.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(termeRecherche, termeRecherche);
-    }
-
     public void supprimerUtilisateurById(Long utilisateurId) {
         utilisateurRepository.deleteById(utilisateurId);
     }
 
-    public Utilisateur connecterUtilisateur(String email, String motDePasse) {
-        // Logique pour vérifier les informations de connexion et renvoyer l'utilisateur s'il est validé
-        return utilisateurRepository.findByEmailAndMotDePasse(email, motDePasse);
-    }
-
-    public void deconnecterUtilisateur() {
-        // Logique pour déconnecter l'utilisateur, par exemple, effacer la session
-        // Cette méthode dépendra de la manière dont vous gérez l'authentification dans votre application
-        // Vous pouvez également utiliser des mécanismes comme Spring Security pour gérer l'authentification et la déconnexion
-        // Ici, nous allons simplement vider la session en réinitialisant les informations d'authentification
-        // SecurityContextHolder.clearContext();
-    }
-
     public Utilisateur modifierInformationsUtilisateur(Long utilisateurId, String nouveauNom, String nouveauPrenom, String nouvelEmail, String nouveauMotDePasse) {
-        Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        // Vérifier quelles informations doivent être mises à jour et les mettre à jour sélectivement
         if (nouveauNom != null) {
             utilisateur.setNom(nouveauNom);
         }
@@ -71,63 +65,78 @@ public class UtilisateurService {
             utilisateur.setMotDePasse(nouveauMotDePasse);
         }
 
-        // Enregistrer les modifications dans la base de données
         return utilisateurRepository.save(utilisateur);
     }
+/*
+    public Utilisateur connecterUtilisateur(String email, String motDePasse) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email);
+        if (utilisateur != null && utilisateur.getMotDePasse().equals(motDePasse)) {
+            return utilisateur;
+        } else {
+            return null;
+        }
+    }
+*/
+public Utilisateur connecterUtilisateur(String email, String motDePasse) {
+    // Rechercher l'utilisateur dans la base de données par son mail
+    Utilisateur utilisateur = utilisateurRepository.findByEmail((email));
+    //Vérifier si l'utilisateur existe et si le mot de passe est correct
+    if (utilisateur != null && utilisateur.getMotDePasse().equals(motDePasse)) {
+        // Créer une instance d'Authentification pour l'utilisateur authentifié
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, motDePasse);
+        // Définir l'authentification dans le contexte de sécurité
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    // Méthode pour réinitialiser le mot de passe d'un utilisateur
+        // Retourner l'utilisateur connecté
+        return utilisateur;
+    } else {
+        // Retourner null si l'authentification a échoué
+        return null;
+    }
+}
+
+    /*public void deconnecterUtilisateur() {
+        SecurityContextHolder.clearContext();
+    }*/
+
+    public void deconnecterUtilisateur() {
+        // Récupérer l'authentification actuelle
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            // Effacer l'authentification actuelle
+            SecurityContextHolder.clearContext();
+        }
+    }
+
+
+
     public void reinitialiserMotDePasse(Long utilisateurId, String nouveauMotDePasse) {
         Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        utilisateur.setMotDePasse(nouveauMotDePasse);
-        utilisateurRepository.save(utilisateur);
+
+        if (isStrongPassword(nouveauMotDePasse)) {
+            utilisateur.setMotDePasse(nouveauMotDePasse);
+            utilisateurRepository.save(utilisateur);
+        } else {
+            throw new IllegalArgumentException("Le nouveau mot de passe ne satisfait pas les exigences minimales.");
+        }
     }
 
-    // Méthode pour vérifier l'existence d'un utilisateur par son ID
-    public boolean existeUtilisateurParId(Long utilisateurId) {
-        return utilisateurRepository.existsById(utilisateurId);
-    }
-
-    // Méthode pour modifier le type d'un utilisateur
-    public void modifierTypeUtilisateur(Long utilisateurId, TypeUtilisateur nouveauType) {
-        Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        utilisateur.setTypeUtilisateur(nouveauType);
-        utilisateurRepository.save(utilisateur);
-    }
-
-
-    // Méthode pour valider les données utilisateur lors de l'inscription ou de la modification du profil
     public boolean validerDonneesUtilisateur(Utilisateur utilisateur) {
-        // Validation de l'email
-        if (!isValidEmail(utilisateur.getEmail())) {
-            return false;
-        }
-
-        // Validation de la force du mot de passe
-        if (!isStrongPassword(utilisateur.getMotDePasse())) {
-            return false;
-        }
-
-        // Toutes les validations ont réussi
-        return true;
+        return isValidEmail(utilisateur.getEmail()) && isStrongPassword(utilisateur.getMotDePasse());
     }
-    private boolean isValidEmail(String email) {
-        // Expression régulière pour valider l'email
-        String regex = "^(.+)@(.+)$";
 
-        // Validation de l'email avec l'expression régulière
+    boolean isValidEmail(String email) {
+        String regex = "^(.+)@(.+)$";
         return email.matches(regex);
     }
 
-    private boolean isStrongPassword(String password) {
-        // Vérifie si le mot de passe contient au moins 8 caractères et au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial
+    boolean isStrongPassword(String password) {
         return password.length() >= 8 &&
                 password.matches(".*[A-Z].*") &&
                 password.matches(".*[a-z].*") &&
                 password.matches(".*\\d.*") &&
                 password.matches(".*[!@#$%^&*()].*");
     }
-
-
 }

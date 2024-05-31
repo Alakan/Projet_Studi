@@ -4,8 +4,8 @@
   <title>Billets - Jeux Olympiques 2024</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="/css/styles.css">
-  <link rel="stylesheet" type="text/css" href="/css/billets.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/billets.css}">
 </head>
 <body>
 <header>
@@ -24,71 +24,51 @@
 <main>
   <section id="tickets">
     <h2>Billets pour les Jeux Olympiques 2024</h2>
-    <!-- Formulaire de réservation de billets -->
-    <form action="/reservation" method="post" id="reservation-form">
-      <label for="sport">Sport :</label>
-      <select name="sport" id="sport">
-        <option value="Athlétisme">Athlétisme</option>
-        <option value="Natation">Natation</option>
-        <option value="Gymnastique">Gymnastique</option>
-        <option value="Basketball">Basketball</option>
-        <option value="Football">Football</option>
-        <option value="Tennis">Tennis</option>
-        <option value="Volleyball">Volleyball</option>
-        <option value="Cyclisme">Cyclisme</option>
-        <option value="Boxe">Boxe</option>
-        <option value="Escrime">Escrime</option>
-        <option value="Judo">Judo</option>
-        <option value="Taekwondo">Taekwondo</option>
-        <option value="Rugby">Rugby</option>
-        <option value="Handball">Handball</option>
-        <option value="Badminton">Badminton</option>
-        <!-- Ajoutez d'autres options pour les sports disponibles -->
-      </select>
-      <br>
-      <label for="nombre">Nombre de billets :</label>
-      <input type="number" name="nombre" id="nombre" min="1" required>
-      <br>
-      <label for="email">Adresse email :</label>
-      <input type="email" name="email" id="email" required>
-      <br>
-      <button type="submit">Réserver</button>
-    </form>
-    <div id="programme-info"></div> <!-- Ajout d'une div pour afficher les informations du programme -->
+    <section id="available-tickets">
+      <h3>Billets disponibles</h3>
+      <div th:each="ticket : ${tickets}">
+        <div class="ticket">
+          <p><strong>Sport :</strong> <span th:text="${ticket.sport}"></span></p>
+          <p><strong>Prix :</strong> <span th:text="${ticket.price}"></span> €</p>
+          <p><strong>Date :</strong> <span th:text="${ticket.date}"></span></p>
+          <form th:action="@{/reservation}" method="post">
+            <input type="hidden" name="ticketId" th:value="${ticket.id}" />
+            <label for="nombre">Nombre de billets :</label>
+            <input type="number" name="nombre" id="nombre" min="1" required />
+            <br>
+            <label for="email">Adresse email :</label>
+            <input type="email" name="email" id="email" required />
+            <br>
+            <button type="submit">Réserver</button>
+          </form>
+        </div>
+      </div>
+    </section>
   </section>
 </main>
 <footer>
   <p>&copy; 2024 Jeux Olympiques</p>
 </footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/js/script.js"></script>
+<script th:src="@{/js/script.js}"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer le paramètre 'sport' de l'URL
     const urlParams = new URLSearchParams(window.location.search);
     const sport = urlParams.get('sport');
-
-    // Sélectionner l'option correspondante dans le menu déroulant
     const sportDropdown = document.getElementById('sport');
     const option = sportDropdown.querySelector(`option[value="${sport}"]`);
     if (option) {
       option.selected = true;
     }
-
-    // Afficher les informations du programme
     const programmeInfo = document.getElementById('programme-info');
     if (sport) {
       programmeInfo.innerHTML = `
         <h3>Informations sur le programme</h3>
         <p>Nom du sport : ${sport}</p>
-        <!-- Ajoutez d'autres informations du programme ici -->
       `;
     }
-
-    // Écouter les changements de sélection dans le menu déroulant
     sportDropdown.addEventListener('change', function() {
       const selectedSport = sportDropdown.value;
-      // Mettre à jour l'URL avec le nouveau sport sélectionné
       window.location.href = '/billets?sport=' + encodeURIComponent(selectedSport);
     });
   });

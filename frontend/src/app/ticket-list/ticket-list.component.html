@@ -1,1 +1,15 @@
-<p>ticket-list works!</p>
+<div *ngFor="let ticket of tickets" class="ticket">
+  <p><strong>Sport :</strong> {{ ticket.sport }}</p>
+  <p><strong>Prix :</strong> {{ ticket.price }} €</p>
+  <p><strong>Date :</strong> {{ ticket.date }}</p>
+  <form [attr.action]="'/reservation'" method="post">
+    <input type="hidden" name="ticketId" [value]="ticket.id" />
+    <label for="nombre">Nombre de billets :</label>
+    <input type="number" name="nombre" id="nombre" min="1" required />
+    <br>
+    <label for="email">Adresse email :</label>
+    <input type="email" name="email" id="email" required />
+    <br>
+    <button type="submit">Réserver</button>
+  </form>
+</div>

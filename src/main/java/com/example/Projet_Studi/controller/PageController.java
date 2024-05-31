@@ -1,8 +1,11 @@
 package com.example.Projet_Studi.controller;
 
+import com.example.Projet_Studi.model.Billet;
 import com.example.Projet_Studi.model.Programme;
 import com.example.Projet_Studi.model.Utilisateur;
 import com.example.Projet_Studi.services.UtilisateurService;
+import com.example.Projet_Studi.services.BilletService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,10 +71,16 @@ public class PageController {
         return "programmes";
     }
 
+    @Autowired
+    private BilletService billetService;
+
     @GetMapping("/billets")
-    public String billets() {
+    public String billets(Model model) {
+        List<Billet> tickets = billetService.getAllBillets();
+        model.addAttribute("tickets", tickets);
         return "billets";
     }
+
 
     @GetMapping("/user-login")
     public String login() {

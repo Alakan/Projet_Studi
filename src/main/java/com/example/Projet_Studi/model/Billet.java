@@ -14,33 +14,28 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "billet")
-@Data // Génère getters, setters, toString, equals, et hashCode
-@NoArgsConstructor // Génère un constructeur sans arguments
-@AllArgsConstructor // Génère un constructeur avec tous les arguments
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Billet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // L'identifiant unique du billet.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // La commande à laquelle est associé le billet.
     @ManyToOne
-    @JoinColumn(name = "id_commande")
+    @JoinColumn(name = "id_commande", nullable = false) // Assure que la commande est obligatoire
     private Commande commande;
 
-    // L'utilisateur qui possède le billet.
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
+    @JoinColumn(name = "id_utilisateur", nullable = false) // Assure que l'utilisateur est obligatoire
     private Utilisateur utilisateur;
 
-    // La clé unique du billet.
     @Column(name = "cle_billet")
     private String cleBillet;
 
-    // Le QR code du billet.
     @Column(name = "qrcode")
     private String qrcode;
 }
